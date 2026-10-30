@@ -1,0 +1,115 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Profil utilisateur IVOIRETONTINE avec rôle et vérification KYC",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Identifiant unique" },
+        "name": { "type": "string", "description": "Nom complet" },
+        "email": { "type": "string", "description": "Adresse email" },
+        "phone": { "type": "string", "description": "Numéro de téléphone CI" },
+        "role": { "type": "string", "enum": ["user", "admin"], "description": "Rôle dans le système" },
+        "city": { "type": "string", "description": "Ville de résidence" },
+        "country": { "type": "string", "description": "Pays" },
+        "avatarUrl": { "type": "string", "description": "Lien de la photo" },
+        "joinedDate": { "type": "string", "description": "Date d'inscription" },
+        "isVerified": { "type": "boolean", "description": "Vérification mobile validée" },
+        "bceaoKycStatus": { "type": "string", "enum": ["verifie", "en_attente", "non_soumis"], "description": "Statut de conformité KYC" }
+      },
+      "required": ["id", "name", "phone", "role"]
+    },
+    "Tontine": {
+      "title": "Tontine",
+      "description": "Groupe de tontine d'épargne rotative",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Identifiant unique" },
+        "code": { "type": "string", "description": "Code unique de la tontine" },
+        "name": { "type": "string", "description": "Nom de la tontine" },
+        "category": { "type": "string", "description": "Secteur ou catégorie" },
+        "description": { "type": "string", "description": "Description de l'objectif" },
+        "creatorId": { "type": "string", "description": "UID du créateur" },
+        "creatorName": { "type": "string", "description": "Nom du créateur" },
+        "creatorPhone": { "type": "string", "description": "Téléphone du créateur" },
+        "contributionAmount": { "type": "number", "description": "Montant par cotisation en FCFA" },
+        "frequency": { "type": "string", "enum": ["hebdomadaire", "bimensuelle", "mensuelle"], "description": "Périodicité des tours" },
+        "participantsCount": { "type": "number", "description": "Nombre total de participants" },
+        "durationMonths": { "type": "number", "description": "Durée totale estimée" },
+        "totalPot": { "type": "number", "description": "Cagnotte brute" },
+        "commissionAmount": { "type": "number", "description": "Commission plateforme 4%" },
+        "netPayout": { "type": "number", "description": "Montant net versé au bénéficiaire" },
+        "rules": { "type": "string", "description": "Règlement intérieur de la tontine" },
+        "payoutStrategy": { "type": "string", "enum": ["tirage_transparent", "ordre_inscription", "accord_mutuel"], "description": "Mode d'attribution des tours" },
+        "creationFeePaid": { "type": "boolean", "description": "Frais de création de 1 000 FCFA acquittés" },
+        "creationFeeTxnId": { "type": "string", "description": "Référence de transaction du paiement des frais" },
+        "status": { "type": "string", "enum": ["en_attente_participants", "active", "terminee"], "description": "État de la tontine" },
+        "createdAt": { "type": "string", "description": "Date de création" },
+        "currentRound": { "type": "number", "description": "Numéro du tour en cours" },
+        "nextDueDate": { "type": "string", "description": "Date de la prochaine échéance" }
+      },
+      "required": ["id", "code", "name", "creatorId", "contributionAmount", "frequency", "participantsCount", "creationFeePaid", "status"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Opération financière Mobile Money ou décaissement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Identifiant transaction" },
+        "transactionRef": { "type": "string", "description": "Référence unique UEMOA" },
+        "date": { "type": "string", "description": "Horodatage" },
+        "type": { "type": "string", "enum": ["frais_creation", "cotisation", "reception_cagnotte", "remboursement"], "description": "Type d'opération" },
+        "tontineId": { "type": "string", "description": "Identifiant tontine associée" },
+        "tontineName": { "type": "string", "description": "Libellé tontine" },
+        "userId": { "type": "string", "description": "UID de l'utilisateur" },
+        "userName": { "type": "string", "description": "Nom de l'utilisateur" },
+        "userPhone": { "type": "string", "description": "Numéro Mobile Money" },
+        "amountGross": { "type": "number", "description": "Montant brut en FCFA" },
+        "feeAmount": { "type": "number", "description": "Frais ou commission" },
+        "amountNet": { "type": "number", "description": "Montant net après frais" },
+        "paymentMethod": { "type": "string", "enum": ["wave", "orange_money", "mtn_momo", "moov_money", "virement_bancaire"], "description": "Opérateur" },
+        "status": { "type": "string", "enum": ["en_attente", "succes", "echec", "rembourse"], "description": "Statut" },
+        "receiptNumber": { "type": "string", "description": "Numéro de reçu officiel" }
+      },
+      "required": ["id", "transactionRef", "type", "userId", "amountGross", "amountNet", "paymentMethod", "status"]
+    },
+    "AdminWithdrawal": {
+      "title": "AdminWithdrawal",
+      "description": "Retrait de revenus plateforme par l'administrateur",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "ID retrait" },
+        "withdrawalRef": { "type": "string", "description": "Référence de virement" },
+        "date": { "type": "string", "description": "Date de validation" },
+        "adminId": { "type": "string", "description": "UID administrateur" },
+        "adminName": { "type": "string", "description": "Nom administrateur" },
+        "amount": { "type": "number", "description": "Montant retiré en FCFA" },
+        "sourceType": { "type": "string", "enum": ["frais_creation", "commissions", "total_disponible"], "description": "Source comptable" },
+        "destinationType": { "type": "string", "enum": ["mobile_money_pro", "virement_bancaire_uemoa"], "description": "Canal de réception" },
+        "destinationAccount": { "type": "string", "description": "Compte ou numéro pro" },
+        "destinationEntity": { "type": "string", "description": "Banque ou opérateur récepteur" },
+        "status": { "type": "string", "enum": ["valide", "en_cours", "rejete"], "description": "Statut de virement" },
+        "auditHash": { "type": "string", "description": "Empreinte cryptographique immuable" }
+      },
+      "required": ["id", "withdrawalRef", "adminId", "amount", "sourceType", "destinationAccount", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "User" },
+      "description": "Collection des profils utilisateurs"
+    },
+    "/tontines/{tontineId}": {
+      "schema": { "$ref": "Tontine" },
+      "description": "Collection des tontines actives et en attente"
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "Transaction" },
+      "description": "Registre des paiements et encaissements"
+    },
+    "/admin_withdrawals/{withdrawalId}": {
+      "schema": { "$ref": "AdminWithdrawal" },
+      "description": "Historique des décaissements de revenus administrateur"
+    }
+  }
+}

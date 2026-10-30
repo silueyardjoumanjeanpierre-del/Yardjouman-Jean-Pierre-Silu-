@@ -1,0 +1,8 @@
+{
+  "name": "Remix IVOIRETONTINE - Plateforme d\u0027Épargne \u0026 Tontine en Côte d\u0027Ivoire",
+  "description": "Plateforme moderne de gestion et numérisation des tontines en Côte d\u0027Ivoire et Afrique de l\u0027Ouest : création payante à 1 000 FCFA, cotisations Mobile Money sécurisées, cagnottes rotatives transparentes et espace administrateur.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
